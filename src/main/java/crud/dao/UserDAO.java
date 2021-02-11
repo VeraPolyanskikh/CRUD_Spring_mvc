@@ -5,9 +5,11 @@ import crud.model.User;
 import java.util.List;
 
 public interface UserDAO {
-    void saveUser(String name, String lastName, byte age);
+    void saveUser(User user);
 
     void removeUserById(long id);
+
+    User getUserById(long id);
 
     List<User> getAllUsers();
 

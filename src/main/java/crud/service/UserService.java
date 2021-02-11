@@ -5,7 +5,11 @@ import crud.model.User;
 import java.util.List;
 
 public interface UserService {
-    void saveUser(String name, String lastName, byte age);
+    void saveUser(User user);
+
+    User getUser(long id);
+
+    void updateUser(Long id, User user);
 
     void removeUserById(long id);
 
