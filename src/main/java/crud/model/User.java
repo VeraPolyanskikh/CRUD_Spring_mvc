@@ -1,12 +1,24 @@
 package crud.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-public class User {
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false,unique = true)
+    private String login;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false)
     private String name;
@@ -17,14 +29,43 @@ public class User {
     @Column(nullable = false)
     private Byte age;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass=Role.class,fetch=FetchType.EAGER)
+    private List<Role> roles;
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public User() {
 
     }
 
-    public User(String name, String lastName, Byte age) {
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public User(String login, String password, String name, String lastName, Byte age, List<Role> roles) {
+        this.login = login;
+        this.password = password;
         this.name = name;
         this.lastName = lastName;
         this.age = age;
+        this.roles = roles;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -62,10 +103,46 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "login='" + login + '\'' +
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
+                ", roles=" + roles +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

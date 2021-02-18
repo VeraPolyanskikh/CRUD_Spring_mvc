@@ -65,4 +65,17 @@ public class UserDAOImpl implements UserDAO {
     public void cleanUsersTable() {
 
     }
+
+    @Override
+    public User getUserByLogin(String loginStr) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try{
+            TypedQuery<User> query =
+                    em.createQuery("from User u where u.login=:loginStr", User.class);
+            query.setParameter("loginStr", loginStr);
+            return  query.getSingleResult();
+        }finally{
+            em.close();
+        }
+    }
 }
