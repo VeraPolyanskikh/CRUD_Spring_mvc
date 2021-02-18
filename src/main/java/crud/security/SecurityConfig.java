@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -70,18 +69,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //страницы аутентификаци доступна всем
                 .antMatchers("/login").anonymous();
-                // защищенные URL
-               // .antMatchers("/hello").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
-
         http
                 // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
                 // защищенные URL
-                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/user/**").access("hasAnyRole('ROLE_ADMIN,ROLE_USER')").
-                anyRequest().authenticated();
-
+                .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.ADMIN.name())
+                .antMatchers(HttpMethod.DELETE, "/admin/**").hasRole(Role.ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/admin/**").hasRole(Role.ADMIN.name())
+                .antMatchers(HttpMethod.PATCH, "/admin/**").hasRole(Role.ADMIN.name())
+                .antMatchers(HttpMethod.GET, "/user/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
+                .anyRequest().authenticated();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
 

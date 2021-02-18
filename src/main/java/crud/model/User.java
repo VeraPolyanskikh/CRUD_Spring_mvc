@@ -18,7 +18,7 @@ public class User implements UserDetails {
     private String login;
 
     @Column(nullable = false)
-    private String password;
+    private String passwd;
 
     @Column(nullable = false)
     private String name;
@@ -34,11 +34,6 @@ public class User implements UserDetails {
     @ElementCollection(targetClass=Role.class,fetch=FetchType.EAGER)
     private List<Role> roles;
 
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public User() {
 
     }
@@ -53,7 +48,7 @@ public class User implements UserDetails {
 
     public User(String login, String password, String name, String lastName, Byte age, List<Role> roles) {
         this.login = login;
-        this.password = password;
+        this.passwd = password;
         this.name = name;
         this.lastName = lastName;
         this.age = age;
@@ -103,7 +98,9 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{" +
-                "login='" + login + '\'' +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", passwd='" + passwd + '\'' +
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
@@ -118,7 +115,15 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return passwd;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
     }
 
     @Override

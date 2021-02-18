@@ -3,7 +3,6 @@ package crud.service;
 import crud.dao.UserDAO;
 import crud.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,28 +13,29 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDAO userDao;
-
-    @Autowired
     private  PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserDAO userDao) {
         this.userDao = userDao;
+    }
 
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder  passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswd(passwordEncoder.encode(user.getPasswd()));
         userDao.saveUser(user);
     }
-
 
     @Override
     @Transactional
     public void updateUser(Long id, User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswd(passwordEncoder.encode(user.getPasswd()));
         userDao.saveUser(user);
     }
 
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public User loadUserByUsername(String s) throws UsernameNotFoundException {
         return userDao.getUserByLogin(s);
     }
-    
+
     @Override
     @Transactional
     public void cleanUsersTable() {
