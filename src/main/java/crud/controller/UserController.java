@@ -1,9 +1,9 @@
 package crud.controller;
 
-import crud.model.User;
-import crud.service.UserService;
+import crud.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +16,11 @@ import java.security.Principal;
 @RequestMapping("")
 public class UserController {
 
-    public final UserService userService;
+    public final UserDetailsService userDetailsService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping("/user")
@@ -28,7 +28,7 @@ public class UserController {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken)principal;
         String name = token.getName();
 
-        model.addAttribute("showUser", userService.loadUserByUsername(name));
+        model.addAttribute("showUser", userDetailsService.loadUserByUsername(name));
         return "user/show";
     }
 
@@ -36,6 +36,7 @@ public class UserController {
     public String getLoginPage() {
         return "user/login";
     }
+
     @ModelAttribute("header")
     public String populateHeader() {
         return "Welcome USER";

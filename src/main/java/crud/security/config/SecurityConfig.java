@@ -1,6 +1,6 @@
-package crud.security;
+package crud.security.config;
 
-import crud.handler.LoginSuccessHandler;
+import crud.security.handler.LoginSuccessHandler;
 import crud.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -23,12 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService; // сервис, с помощью которого тащим пользователя
     private final LoginSuccessHandler successUserHandler;
 
-    public SecurityConfig(@Qualifier("userServiceImpl") UserDetailsService userDetailsService,
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
                           LoginSuccessHandler successUserHandler) {
         this.userDetailsService = userDetailsService;
         this.successUserHandler = successUserHandler;
     }
-
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -37,8 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-
         http.formLogin()
                 // указываем страницу с формой логина
                 .loginPage("/")
@@ -73,11 +71,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
                 // защищенные URL
-                .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers(HttpMethod.DELETE, "/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers(HttpMethod.POST, "/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers(HttpMethod.PATCH, "/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers(HttpMethod.GET, "/user/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
+                .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.RoleItem.ADMIN.name())
+                .antMatchers(HttpMethod.DELETE, "/admin/**").hasRole(Role.RoleItem.ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/admin/**").hasRole(Role.RoleItem.ADMIN.name())
+                .antMatchers(HttpMethod.PUT, "/admin/**").hasRole(Role.RoleItem.ADMIN.name())
+
+                .antMatchers(HttpMethod.GET, "/user/**").hasAnyRole(Role.RoleItem.ADMIN.name(),
+                Role.RoleItem.USER.name())
                 .anyRequest().authenticated();
     }
 
@@ -89,8 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Необходимо для шифрования паролей
     // В данном примере не используется, отключен
-    /*
-    @Bean
+   /* @Bean
     public static NoOpPasswordEncoder passwordEncoder() {
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }*/

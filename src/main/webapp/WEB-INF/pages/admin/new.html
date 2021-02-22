@@ -46,10 +46,10 @@
             <label for="roles">Roles</label>
         </td>
             <td>
-                <select  id="roles" name="roles" multiple="multiple">
+                <select  id="roles" name="roles" multiple="multiple"  >
                     <option th:each="roleItem : ${rolesLst}"
-                            th:value="${roleItem.name()}"
-                            th:text="${roleItem.name()}"/>
+                            th:value="${roleItem.getRoleName()}"
+                            th:text="${roleItem.getRoleName()}"/>
                 </select>
             </td>
         </tr>

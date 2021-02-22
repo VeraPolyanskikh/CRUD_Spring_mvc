@@ -1,11 +1,12 @@
 package crud.service;
 
+import crud.model.Role;
 import crud.model.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.Set;
 
-public interface UserService extends UserDetailsService {
+public interface UserService  {
     void saveUser(User user);
 
     User getUser(long id);
@@ -16,5 +17,5 @@ public interface UserService extends UserDetailsService {
 
     List<User> getAllUsers();
 
-    void cleanUsersTable();
+    List<Role> getAllRoles();
 }

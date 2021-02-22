@@ -9,7 +9,7 @@
 <div th:object="${header}" th:text="${header}" ></div>
 <br/>
 <div>
-<form th:method="PATCH" th:action="@{/admin/{id}(id=${editUser.id})}" th:object="${editUser}">
+<form th:method="PUT" th:action="@{/admin/{id}(id=${editUser.id})}" th:object="${editUser}">
     <table width="30%">
         <tr><td>
             <label for="name">Login</label>
@@ -47,11 +47,11 @@
             <label for="roles">Roles</label>
         </td>
             <td>
-                <select  id="roles" name="roles" multiple="multiple">
-                <option th:each="roleItem : ${rolesLst}"
-                        th:selected="${editUser.roles.contains(roleItem)}"
-                        th:value="${roleItem.name()}"
-                        th:text="${roleItem.name()}"/>
+                <select  id="roles" name="roles" multiple="multiple" th:object="user.roles">
+                    <option th:each="roleItem : ${rolesLst}" th:value="${roleItem.getRoleName()}"
+                            th:text="${roleItem.getRoleName()}"
+                            th:selected="${editUser.roles.contains(roleItem)}"/>
+
             </select>
             </td>
         </tr>

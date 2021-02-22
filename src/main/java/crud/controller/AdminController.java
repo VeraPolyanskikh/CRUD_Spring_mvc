@@ -32,6 +32,7 @@ public class AdminController {
     @GetMapping(value = "/new")
     public String create(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("rolesLst", userService.getAllRoles());
         return "admin/new";
     }
 
@@ -46,18 +47,18 @@ public class AdminController {
         return "Welcome ADMIN";
     }
 
-    @ModelAttribute("rolesLst")
-    public List<Role> populateRoles() {
-        return Arrays.asList(Role.values().clone());
-    }
+
 
     @GetMapping(value = "/{id}")
     public String edit(@PathVariable("id") long id, Model model) {
-        model.addAttribute("editUser", userService.getUser(id));
+        User user = userService.getUser(id);
+        model.addAttribute("editUser", user);
+
+        model.addAttribute("rolesLst", userService.getAllRoles());
         return "/admin/edit";
     }
 
-    @PatchMapping(value = "/{id}")
+    @PutMapping(value = "/{id}")
     public String update(@PathVariable("id") long id, @ModelAttribute("editUser") User user) {
         userService.updateUser(id, user);
         return "redirect:/admin";

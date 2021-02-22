@@ -1,14 +1,15 @@
 package crud.service;
 
 import crud.dao.UserDAO;
+import crud.model.Role;
 import crud.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -57,19 +58,10 @@ public class UserServiceImpl implements UserService {
         return userDao.getAllUsers();
     }
 
-
-    // «Пользователь» – это просто Object. В большинстве случаев он может быть
-    //  приведен к классу UserDetails.
-    // Для создания UserDetails используется интерфейс UserDetailsService, с единственным методом:
     @Override
     @Transactional(readOnly = true)
-    public User loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userDao.getUserByLogin(s);
+    public List<Role> getAllRoles() {
+        return userDao.getAllRoles();
     }
 
-    @Override
-    @Transactional
-    public void cleanUsersTable() {
-
-    }
 }

@@ -1,8 +1,10 @@
 package crud.dao;
 
+import crud.model.Role;
 import crud.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserDAO {
     void saveUser(User user);
@@ -13,7 +15,8 @@ public interface UserDAO {
 
     List<User> getAllUsers();
 
-    void cleanUsersTable();
+    List<Role> getAllRoles();
+
 
     User getUserByLogin(String login);
 }

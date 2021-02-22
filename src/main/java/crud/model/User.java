@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User implements UserDetails {
@@ -30,9 +31,8 @@ public class User implements UserDetails {
     private Byte age;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass=Role.class,fetch=FetchType.EAGER)
-    private List<Role> roles;
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE},targetEntity = Role.class)
+    private Set<Role> roles;
 
     public User() {
 
@@ -46,7 +46,7 @@ public class User implements UserDetails {
         this.login = login;
     }
 
-    public User(String login, String password, String name, String lastName, Byte age, List<Role> roles) {
+    public User(String login, String password, String name, String lastName, Byte age, Set<Role> roles) {
         this.login = login;
         this.passwd = password;
         this.name = name;
@@ -55,11 +55,11 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

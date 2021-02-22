@@ -28,8 +28,6 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
         registerHiddenFieldFilter(servletContext);
-        //serController userController = new UserController();
-        //userController.getLoginPage();
     }
 
     /* Данный метод указывает url, на котором будет базироваться приложение */
