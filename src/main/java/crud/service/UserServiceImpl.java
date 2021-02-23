@@ -29,14 +29,22 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void saveUser(User user) {
-        user.setPasswd(passwordEncoder.encode(user.getPasswd()));
+        if(user.getPasswd() != null){
+            user.setPasswd(passwordEncoder.encode(user.getPasswd()));
+        }
         userDao.saveUser(user);
     }
 
     @Override
     @Transactional
     public void updateUser(Long id, User user) {
-        user.setPasswd(passwordEncoder.encode(user.getPasswd()));
+        User found = userDao.getUserById(id);
+        if(user.getPasswd() != null && !user.getPasswd().equals(found.getPasswd())
+                &&!passwordEncoder.matches(user.getPasswd(),found.getPasswd())) {
+            user.setPasswd(passwordEncoder.encode(user.getPasswd()));
+        }else{
+            user.setPasswd(found.getPasswd());
+        }
         userDao.saveUser(user);
     }
 

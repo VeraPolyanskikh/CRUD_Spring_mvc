@@ -15,13 +15,14 @@
             <label for="name">Login</label>
         </td>
             <td>
-                <input type="text" th:field="*{login}" id="login"/>
+                <input type="text" th:field="*{login}"  id="login"/>
             </td></tr>
         <tr><td>
             <label for="passwd">Password</label>
         </td>
             <td>
-                <input type="password" th:field="*{passwd}" id="passwd"/>
+                <input type="password" th:value="${editUser.passwd}" name="passwd"
+                      id="passwd"/>
             </td></tr>
 
         <tr><td>
@@ -47,10 +48,11 @@
             <label for="roles">Roles</label>
         </td>
             <td>
-                <select  id="roles" name="roles" multiple="multiple" th:object="user.roles">
-                    <option th:each="roleItem : ${rolesLst}" th:value="${roleItem.getRoleName()}"
-                            th:text="${roleItem.getRoleName()}"
-                            th:selected="${editUser.roles.contains(roleItem)}"/>
+                <select  id="roles" name="roles" multiple="multiple" >
+                    <option th:each="roleItem : ${allRoles}"
+                            th:value="${{roleItem}}"
+                            th:text="${roleItem.roleName.name()}"
+                    th:selected="${editUser.roles.contains(roleItem)}">option
 
             </select>
             </td>

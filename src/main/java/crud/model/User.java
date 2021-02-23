@@ -31,7 +31,8 @@ public class User implements UserDetails {
     private Byte age;
 
     @Column(nullable = false)
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE},targetEntity = Role.class)
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REFRESH,
+            CascadeType.MERGE,CascadeType.DETACH},targetEntity = Role.class)
     private Set<Role> roles;
 
     public User() {

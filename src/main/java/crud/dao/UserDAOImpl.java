@@ -2,22 +2,16 @@ package crud.dao;
 
 import crud.model.Role;
 import crud.model.User;
-import org.hibernate.LockOptions;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
 
 
-    @PersistenceContext(name="my.persistence", type=PersistenceContextType.EXTENDED)
+    @PersistenceContext(name = "my.persistence", type = PersistenceContextType.EXTENDED)
     protected EntityManager entityManager;
 
     public UserDAOImpl() {
@@ -32,9 +26,9 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void removeUserById(long id) {
         try {
-            User foundUser = entityManager.find(User.class, id,LockModeType.PESSIMISTIC_WRITE);
+            User foundUser = entityManager.find(User.class, id, LockModeType.PESSIMISTIC_WRITE);
             entityManager.remove(foundUser);
-        }catch(PessimisticLockException e){
+        } catch (PessimisticLockException e) {
             System.out.println("lock failed");
         }
 
@@ -42,8 +36,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserById(long id) {
-        User user = entityManager.find(User.class, id);
-        return user;
+        return entityManager.find(User.class, id);
     }
 
     @Override
@@ -61,6 +54,6 @@ public class UserDAOImpl implements UserDAO {
         TypedQuery<User> query =
                 entityManager.createQuery("from User u where u.login=:loginStr", User.class);
         query.setParameter("loginStr", loginStr);
-        return  query.getSingleResult();
+        return query.getSingleResult();
     }
 }

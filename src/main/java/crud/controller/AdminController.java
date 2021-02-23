@@ -1,6 +1,5 @@
 package crud.controller;
 
-import crud.model.Role;
 import crud.model.User;
 import crud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -32,7 +31,7 @@ public class AdminController {
     @GetMapping(value = "/new")
     public String create(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("rolesLst", userService.getAllRoles());
+        model.addAttribute("allRoles", userService.getAllRoles());
         return "admin/new";
     }
 
@@ -51,10 +50,8 @@ public class AdminController {
 
     @GetMapping(value = "/{id}")
     public String edit(@PathVariable("id") long id, Model model) {
-        User user = userService.getUser(id);
-        model.addAttribute("editUser", user);
-
-        model.addAttribute("rolesLst", userService.getAllRoles());
+        model.addAttribute("editUser", userService.getUser(id));
+        model.addAttribute("allRoles", userService.getAllRoles());
         return "/admin/edit";
     }
 

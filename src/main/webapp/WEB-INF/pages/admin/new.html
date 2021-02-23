@@ -21,7 +21,7 @@
             <label for="passwd">Password</label>
         </td>
             <td>
-                <input type="password" th:field="*{passwd}" id="passwd"/>
+                <input th:type="password" th:field="*{passwd}" id="passwd"/>
             </td></tr>
         <tr><td>
             <label for="name">Name</label>
@@ -46,10 +46,12 @@
             <label for="roles">Roles</label>
         </td>
             <td>
-                <select  id="roles" name="roles" multiple="multiple"  >
-                    <option th:each="roleItem : ${rolesLst}"
-                            th:value="${roleItem.getRoleName()}"
-                            th:text="${roleItem.getRoleName()}"/>
+                <select  id="roles" name="roles" multiple="multiple" >
+                    <option th:each="roleItem : ${allRoles}"
+                            th:value="${roleItem.roleName.name()}"
+                            th:text="${roleItem.roleName.name()}">option
+                    </option>
+
                 </select>
             </td>
         </tr>

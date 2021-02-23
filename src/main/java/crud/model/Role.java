@@ -41,8 +41,6 @@ public class Role implements GrantedAuthority {
         ADMIN,
         USER,
         OTHER;
-
-
         public String getAuthority() {
             return "ROLE_" + name();
         }

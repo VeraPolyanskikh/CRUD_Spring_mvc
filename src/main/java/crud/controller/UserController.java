@@ -1,6 +1,5 @@
 package crud.controller;
 
-import crud.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String show( Model model, Principal principal) {
-        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken)principal;
+    public String show(Model model, Principal principal) {
+        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
         String name = token.getName();
 
         model.addAttribute("showUser", userDetailsService.loadUserByUsername(name));
