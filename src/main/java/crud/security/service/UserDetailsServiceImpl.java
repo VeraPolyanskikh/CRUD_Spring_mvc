@@ -1,4 +1,4 @@
-package crud.service;
+package crud.security.service;
 
 import crud.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -11,7 +11,7 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
 
-    @PersistenceContext(name = "my.persistence", type = PersistenceContextType.EXTENDED)
+    @PersistenceContext( type = PersistenceContextType.EXTENDED)
     protected EntityManager entityManager;
 
     public UserDAOImpl() {

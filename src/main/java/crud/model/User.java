@@ -1,10 +1,12 @@
 package crud.model;
 
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,9 +33,9 @@ public class User implements UserDetails {
     private Byte age;
 
     @Column(nullable = false)
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REFRESH,
-            CascadeType.MERGE,CascadeType.DETACH},targetEntity = Role.class)
-    private Set<Role> roles;
+    @ManyToMany(targetEntity = Role.class)
+    @JoinTable(foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT))
+    private Set<Role> roles ;
 
     public User() {
 
@@ -108,6 +110,7 @@ public class User implements UserDetails {
                 ", roles=" + roles +
                 '}';
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
