@@ -1,6 +1,7 @@
 package crud.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ public class UserController {
     public final UserDetailsService userDetailsService;
 
     @Autowired
-    public UserController(UserDetailsService userDetailsService) {
+    public UserController(@Qualifier("userDetailsServiceImpl")UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
